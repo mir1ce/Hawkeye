@@ -70,3 +70,5 @@ Hawkeye(鹰眼)一款基于goalang开发的安全工具，旨在帮助安全工�
 更多安全问题，请关注微信公众号，获取更多信息。或者微信公众号后台联系作者，加入交流群，获取更多信息。
 ![qrcode_for_gh_121aa154068a_430](https://github.com/user-attachments/assets/ada22b22-a230-4a91-a784-332a7fb7ac57)
 
+## Stargazers over time
+[![Stargazers over time](https://starchart.cc/mir1ce/Hawkeye.svg?variant=adaptive)](https://starchart.cc/mir1ce/Hawkeye)
