@@ -1,4 +1,4 @@
-<h2 id="uV6xv">关于Hawkeye</h2>
+<h2 id="uV6xv">⭐关于Hawkeye</h2>
 本工具为安全分析、应急响应、事件响应、DFIR、安全服务等岗位从业人员设计的一个图形化Windows安全分析工具，涵盖常见Windows安全分析场景，能够有效的发现Windows主机存在的安全威胁。工具整体实现由go语言编写，通过调用Windows系统API获取主机相关信息，并将常见需要分析的事件ID展示在图形化界面，无需去记忆繁杂的Windows事件id，小白也能很快的上手进行分析，大幅度降低使用门槛。
 
 工具集成了yara扫描的功能，用户可以根据自身需要编写yara规则，对进程进行威胁检索，程序自身使用elastic security相关规则，涵盖大部分已知的安全威胁。并且程序提供了友好的数据复制功能，在编写安全报告时，直接复制数据即可使用。
@@ -6,7 +6,7 @@
 <h2 id="JvNIk">支持平台</h2>
 Windows7-Windows11
 
-<h2 id="TaXg1">核心特点</h2>
+<h2 id="TaXg1">⭐核心特点</h2>
 
 + **进程信息**：能够查看当前主机相关进程，并且支持查看相关进程加载的DLL模块，支持文件跳转，进程终止等功能
 
@@ -26,7 +26,7 @@ Windows7-Windows11
 
 **PS：重点是程序大小仅****10.4****MB，upx压缩后程序仅****4.21****MB大小，无需安装即开即用，方便快速上机进行使用。并且在网络传输过程中也能够节省大量时间。**
 
-<h2 id="yUldm">功能</h2>
+<h2 id="yUldm">⭐功能</h2>
 <h3 id="L1O2d">进程信息</h3>
 该功能能够查看当前主机所有的进程信息包含进程名称、父进程pid、父进程名称、进程创建时间、可执行文件路径、MD5等关键信息，点击相关进程后能够查看当前进程加载的DLL模块信息，并且右键支持进程信息复制以及文件跳转等功能
 
@@ -132,7 +132,7 @@ Windows7
 
 [https://github.com/akkuman/EvilEye](https://github.com/akkuman/EvilEye)
 
-<h2 id="dl1R9">杂谈</h2>
+<h2 id="dl1R9">⭐杂谈</h2>
 程序迭代好几个版本了，最初Windows日志只支持常见的登录日志，后面又对日志进行了扩充，再也不用记那些繁杂的Windows事件id了，想想当初自己记那些id就头疼，有时还得翻阅笔记。再后面又引入yara规则对文件进程等信息进行扫描，大幅减轻常见分析常见的分析场景，还支持数据复制的功能，减轻写分析报告的压力。至于文件检索的功能，就不写了，Everything更好用，哈哈哈哈哈，写的话也是调用Everything的SDK，没必要，用它就好。
 
 
@@ -153,3 +153,6 @@ Windows7
 
 <h2 id="mtF4n">免责声明</h2>
 <font style="color:rgb(31, 35, 40);">免责声明：此工具仅限于安全研究，用户承担因使用此工具而导致的所有法律和相关责任！作者不承担任何法律责任</font>
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=mir1ce/Hawkeye&type=Date)](https://www.star-history.com/#mir1ce/Hawkeye&Date)
