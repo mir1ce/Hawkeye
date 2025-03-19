@@ -153,6 +153,7 @@ Windows7
 
 <h2 id="mtF4n">免责声明</h2>
 <font style="color:rgb(31, 35, 40);">免责声明：此工具仅限于安全研究，用户承担因使用此工具而导致的所有法律和相关责任！作者不承担任何法律责任</font>
-## Star History
+
+<h2 id="mtF4n">Star History</h2>
 
 [![Star History Chart](https://api.star-history.com/svg?repos=mir1ce/Hawkeye&type=Date)](https://www.star-history.com/#mir1ce/Hawkeye&Date)
