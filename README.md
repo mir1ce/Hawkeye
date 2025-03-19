@@ -1,107 +1,155 @@
-## ✨Hawkeye 一款Windows综合应急响应工具
-## 免责声明
-免责声明：此工具仅限于安全研究，用户承担因使用此工具而导致的所有法律和相关责任！作者不承担任何法律责任
+<h2 id="uV6xv">关于Hawkeye</h2>
+本工具为安全分析、应急响应、事件响应、DFIR、安全服务等岗位从业人员设计的一个图形化Windows安全分析工具，涵盖常见Windows安全分析场景，能够有效的发现Windows主机存在的安全威胁。工具整体实现由go语言编写，通过调用Windows系统API获取主机相关信息，并将常见需要分析的事件ID展示在图形化界面，无需去记忆繁杂的Windows事件id，小白也能很快的上手进行分析，大幅度降低使用门槛。
 
-### ✨Tips
-本程序使用upx进行压缩，部分杀毒软件可能会识别为病毒
+工具集成了yara扫描的功能，用户可以根据自身需要编写yara规则，对进程进行威胁检索，程序自身使用elastic security相关规则，涵盖大部分已知的安全威胁。并且程序提供了友好的数据复制功能，在编写安全报告时，直接复制数据即可使用。
 
-### ✨简介
-Hawkeye(鹰眼)一款基于golang开发的安全工具，旨在帮助安全工程师上机排查时能够快速的定位问题，提供排查思路。
+<h2 id="JvNIk">支持平台</h2>
+Windows7-Windows11
 
-### ❌程序运行报错的问题
-运行反馈服务器返回一个参照，如下图所示，鼠标右键->属性->兼容性->勾选以管理员身份运行此程序，点击应用就好了
-![微信截图_20250110095450](https://github.com/user-attachments/assets/666c18f1-f5f8-4898-b590-cf943d900036)
+<h2 id="TaXg1">核心特点</h2>
+
++ **进程信息**：能够查看当前主机相关进程，并且支持查看相关进程加载的DLL模块，支持文件跳转，进程终止等功能
+
++ **外连分析** ：通过外连IP快速定位异常进程，并输出常见的自启动维持项。
+
++ **beacon扫描** ：集成BeaconEye模块，检索当前系统的CobaltStrike异常进程
+
++ **主机信息**：涵盖常见分析场景，主机用户、计划任务、服务、自启动等信息，并对可执行文件路径采用yara进行扫描，并进行提示。
+
++ **日志分析**：涵盖Windows常见Windows事件id分析场景，如登录成功、登录失败、RDP登录、SqlServer、服务、Powershell等。
+
++ **进程扫描**：引入yara扫描引擎，对当前系统进程进行扫描，用户可以在输入框内输入yara规则路径，并且可以通过修改hawkeye目录下的rules文件下规则，进行定制化修改。
+
++ **活动痕迹**：工具对常见活动痕迹进行了采集，如Prefetch文件解析、UserAssit活动记录以及Recent文件夹信息，查看主机历史的操作记录。
+
++ **内存检索**：能够通过指定字符串对进程进行检索，可用于僵尸网络、恶意外连、挖矿病毒等相关场景。
+
+**PS：重点是程序大小仅****10.4****MB，upx压缩后程序仅****4.21****MB大小，无需安装即开即用，方便快速上机进行使用。并且在网络传输过程中也能够节省大量时间。**
+
+<h2 id="yUldm">功能</h2>
+<h3 id="L1O2d">进程信息</h3>
+该功能能够查看当前主机所有的进程信息包含进程名称、父进程pid、父进程名称、进程创建时间、可执行文件路径、MD5等关键信息，点击相关进程后能够查看当前进程加载的DLL模块信息，并且右键支持进程信息复制以及文件跳转等功能
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742307243865-9a08456e-f566-4f17-821c-8050e371fd9a.png)
+
+<h3 id="VZRWz">外连助手</h3>
+旨在发现异常外连后，通过外连ip及时发现相关程序进程以及常见维持项信息，方便进行快速的分析处置的工作。
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742307435639-ae49b7ad-51aa-4292-9f24-5a35c9f460e3.png)
+
+<h3 id="Y8cMM">beacon扫描</h3>
+该功能会遍历当前系统进程信息，并且找出CobaltStrike加载的进程，并解析相关信息。
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742307523741-6db20972-baa5-4729-9f59-29fcb7b16703.png)
+
+<h3 id="pEGCw">主机信息</h3>
+主机信息模块包含了用户信息、计划任务、服务信息、启动项信息以及镜像劫持
+
+用户信息会标识当前系统存在的隐藏账户，并进行提示
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742307596423-de2a3515-8304-4e1b-8ad0-95d62f5c8b60.png)
+
+计划任务模块，会检索当前系统存在的计划任务信息，并且调用yara扫描模块，检索是否存在恶意程序。
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742307616707-de87e603-53d7-4e4a-b1cd-f17af2ecfe14.png)
+
+同理计划服务、启动项以及镜像劫持等功能也会展示相关信息，并调用yara扫描模块，对这些常见维持项进行扫描。
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742307667942-8eaaa36c-5018-49e8-bae9-d873ed3dd7f4.png)
+
+<h3 id="KawnZ">日志分析</h3>
+日志分析模块，涵盖常见Windows应急分析过程中，常见的Windows事件，如登录成功、登录失败、RDP登录、RDP连接、服务创建、用户创建、sqlserver日志以及powershell日志等信息。
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742307738505-21d589ea-2947-4e3f-9143-90f946eb6ede.png)
+
+并且在服务创建模块中会对异常服务信息进行标记，发现可能被横向攻击的服务日志。
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742307884492-6a04de66-1233-4d7e-bb0f-b4b3bd655b02.png)
+
+在sqlserver日志中也会对异常的组件激活行为进行标识。
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742307900712-4b4f271d-ded4-453e-a8d0-31a001d8d873.png)
+
+同理在powershell日志分析模块中也会对异常的powershell命令进行标记，发现安全风险。
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742307954002-d215c29e-c562-4141-9676-b258c891fb3b.png)
+
+<h3 id="PxfGd">进程扫描</h3>
+进程扫描采用了yara扫描的功能，能够对当前系统进程进行扫描，发现异常风险。若发现异常进程，会将相关信息打印在告警日志面板。
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742308051917-796809dc-464e-4383-b5f8-c12746c487e6.png)
+
+该功能采用了elastic security的yara规则，在HawkEye同级目录下的rules文件夹中，用户可以将自己编写的yara规则放在该目录下，文件后缀为.yara，如果在其他目录下放有yara规则，程序提供了输入框，可以根据相关规则路径，进行引入。
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742308292264-9cd9fc7c-df97-4aec-9a5b-03a43eee2e60.png)
+
+<h3 id="l9RIF">活动痕迹</h3>
+主机会采集当前系统Prefetch文件、UserAssit以及Recent文件夹相关信息进行展示，方便用户分析主机实现时攻击者通过RDP进行操作的相关记录。
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742308360250-80fdbd99-cfda-4252-a6af-53b63745d661.png)
+
+<h3 id="pgipi">威胁检索</h3>
+该功能会对当前主机内存进行字符串检索，常用于异常域名外连的使用场景，方便快速定位可疑进程。
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742308536604-6d85ab07-9dae-44dc-bd89-a75a8df5762e.png)
+
+<h2 id="TpccW">各平台运行效果</h2>
+Windows11
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742310038052-bd8da13b-4329-47c4-bbb4-1ee41cce7f6a.png)
+
+Windows Server 2019
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742310073966-d97d0d95-7e4c-47f6-a998-f6cb2ff25cb5.png)
+
+Windows7
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742310142774-dae577b5-33d1-4aaa-81e9-a246dde92d80.png)
+
+<h2 id="On2n9">其他问题</h2>
+1、程序需要在管理员权限下进行使用，如果在非管理员权限运行，程序提示权限不够。
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742310281410-a81732fa-bc0a-45c9-b871-96d3e6d08cd9.png)
+
+2、程序退出时会有直接退出或者托盘运行的提示，根据用户需要选择退出方式，点击yes程序会直接退出。
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742310349565-459fe148-588c-4021-b5c0-870d9d28c8e6.png)
+
+如果是托盘运行，退出程序后，需要在托盘处选择退出，程序即可退出。
+
+![](https://cdn.nlark.com/yuque/0/2025/png/26746188/1742310389574-9d0353be-d0ba-4d7a-b107-6e4c99eed0f5.png)
+
+<h2 id="A9Xnf">其他</h2>
+1、本程序默认使用elastic security的yara检测规则
+
+[https://github.com/elastic/protections-artifacts](https://github.com/elastic/protections-artifacts)
+
+2、图形化框架开发使用govcl
+
+[https://github.com/ying32/govcl/](https://github.com/ying32/govcl/)
+
+3、Beacon扫描模块采用了EvilEye该项目并对相关程序进行修改
+
+[https://github.com/akkuman/EvilEye](https://github.com/akkuman/EvilEye)
+
+<h2 id="dl1R9">杂谈</h2>
+程序迭代好几个版本了，最初Windows日志只支持常见的登录日志，后面又对日志进行了扩充，再也不用记那些繁杂的Windows事件id了，想想当初自己记那些id就头疼，有时还得翻阅笔记。再后面又引入yara规则对文件进程等信息进行扫描，大幅减轻常见分析常见的分析场景，还支持数据复制的功能，减轻写分析报告的压力。至于文件检索的功能，就不写了，Everything更好用，哈哈哈哈哈，写的话也是调用Everything的SDK，没必要，用它就好。
 
 
-### ✨功能
-#### ✨外连分析
-当发现主机存在恶意外连时，并且知道外连地址，能够快速的定位外连的进程，以及进程的连接信息。同时根据进程定位到对应的文件以及常见维持项。该功能适用于常见的外连场景，如挖矿，木马，后门等。
-如下图所示，以todesk为例，通过外连分析功能，能够快速的定位到todesk.exe进程，以及进程的连接信息。
 
-![image](https://github.com/user-attachments/assets/8473373c-3fc3-4738-a27b-7d886ed3e11f)
+至于Issue提到的进程排序，目前看了下，程序是自动根据pid从小到大进行排列，然后govcl这个框架也没琢磨出来怎么再listview表单中去实现，也不想写了，主要是懒，当然写这个程序的初衷也是因为懒，哈哈哈哈，懒得记那些繁杂的id还得用logparse去敲命令如果是看Windows事件管理器，看的脑壳痛还有的不是要关注的类型、懒得手工使用certutil去计算进程相关文件的md5，也懒得每次分析事件托一大堆工具上去，总之就是因为懒，哈哈哈哈哈。
 
 
-#### ✨Beacon扫描
-适用于主机存在C2外连场景，该功能能够快速的扫描主机上的beacon信息，包括beacon的进程信息，beacon的连接信息等。
-![image-1](https://github.com/user-attachments/assets/e4ffdd85-625f-464f-b5e4-21a96662c682)
+
+个人觉得这个工具有点像个大杂烩，哈哈哈，所以就勉强叫他是综合性的Windows应急分析工具吧。为啥不加响应，也没写自动处置的功能，而且处置这一块的东西，还是需要人去分析后再去处置，如果加了处置，万一出问题了呢，哈哈哈哈，再一个，一下子就处置了，咋写报告，还得截图啥的，哈哈哈哈。
 
 
-#### ✨主机信息
-该功能能够查看常见的主机信息，具体如下：
 
-- 用户信息
-能够查看当前主机用户，以及主机是否存在隐藏账号
-![image-2](https://github.com/user-attachments/assets/18c9318e-cd3b-435e-99c2-aa9179c0d88e)
+然后就是会被杀软查杀的问题了，go不知为啥，我写个helloworld都能给我杀，后面捉摸着是内嵌入yara规则的问题，就索性不嵌入了，直接丢到当前目录下得了，也方便大家自己diy rules文件夹下的规则。之前内嵌，看到有小伙伴丢到微步上去了，看了下报告，说这个程序又是勒索、又是蠕虫、还又是红队工具(黑人问号.jpg)。自己看到都觉得好笑，哈哈哈哈。现在直接舍弃内嵌。
 
 
-- 计划任务
-查看当前主机的计划任务以及触发时间
-![image-3](https://github.com/user-attachments/assets/c2a58c87-5706-4813-ab2d-efceefcc489a)
 
+最后希望大家使用愉快。
 
-- 服务信息
-![image-4](https://github.com/user-attachments/assets/8aeb05af-c5c1-4544-a547-e906a57fe44b)
-
-
-- 启动项信息
-![image-5](https://github.com/user-attachments/assets/96247878-5e84-462d-a048-cb5d49519f49)
-
-
-#### ✨日志分析
-- 登录成功日志
-该功能会获取当前主机所有登录成功的日志，包括用户名，登录时间，登录IP等信息。
-![image-6](https://github.com/user-attachments/assets/3eb5ff28-0f24-4dd5-a470-42de8e3289ef)
-
-
-- 登录失败日志
-该功能会获取当前主机所有登录失败的日志，包括用户名，登录时间，登录IP等信息。
-![image-7](https://github.com/user-attachments/assets/49fd82c4-d501-405e-954a-7b1c294ca9ec)
-
-
-- 服务创建日志
-该功能会获取当前主机所有服务创建的日志，包括服务名，服务路径等信息。
-![image-8](https://github.com/user-attachments/assets/7ec6bf90-7766-4828-8fa8-bda9dcc6a25c)
-
-
-- 用户创建日志
-该功能会获取当前主机所有用户创建的日志，包括用户名，用户路径等信息。方便安全工程师查看是否存在可以账号的创建。
-![image-9](https://github.com/user-attachments/assets/97f7beb6-8a72-4416-a381-eb6de600acf4)
-
-### 2025.1.26 更新日志
-#### 新增文件签名验证功能
-日常应急响应工作中，可能需要通过签名去判断该文件是否存在异常，本次版本更新，通过调用Windows API获取常见权限维持项对应的可执行文件的签名信息。
-![image10](https://github.com/user-attachments/assets/6362d5a3-6754-44d8-b4f5-4c2e568462be)
-![image11](https://github.com/user-attachments/assets/5656a772-a8ba-4bfe-885e-a292fdb0dee2)
-
-#### 新增更多应急响应关注日志
-##### RDP登录日志
-![image12](https://github.com/user-attachments/assets/ac3e9055-9e58-48c2-a9cb-6b3f17baa1e4)
-
-##### RDP连接日志
-新增RDP连接日志，方便分析内网遭受RDP横向攻击的主机
-![image13](https://github.com/user-attachments/assets/61cc68b8-7dd8-45c9-aceb-fd7462b380b1)
-
-##### sqlserver日志
-新增sqlserver日志，并重点关注show advance options以及xp_cmdshell日志，并给出标识
-![image13](https://github.com/user-attachments/assets/aafbdd96-a77f-4e59-b871-8a43de4c3026)
-
-##### Powershell日志
-新增powershell日志
-![image15](https://github.com/user-attachments/assets/7459e01f-106d-4672-9e57-b636efbcdf54)
-
-
-### 2025.2.21更新日志
-本次版本更新如下：
-1、Windows进程分析
-2、进程加载DLL分析
-3、yara进程扫描
-
-整体程序功能新加功能，可以关注微信公众号：事件响应回忆录，查看相关文章获取。
-
-
-### ✨微信公众号
-更多安全问题，请关注微信公众号：事件响应回忆录，获取更多信息。或者微信公众号后台联系作者，加入交流群，获取更多信息。
-![qrcode_for_gh_121aa154068a_430](https://github.com/user-attachments/assets/ada22b22-a230-4a91-a784-332a7fb7ac57)
-
-## Stargazers over time
-[![Stargazers over time](https://starchart.cc/mir1ce/Hawkeye.svg?variant=adaptive)](https://starchart.cc/mir1ce/Hawkeye)
+<h2 id="mtF4n">免责声明</h2>
+<font style="color:rgb(31, 35, 40);">免责声明：此工具仅限于安全研究，用户承担因使用此工具而导致的所有法律和相关责任！作者不承担任何法律责任</font>
